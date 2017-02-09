@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Primeira etapa - Front End Cubo</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js"></script>
+		
+		<script>
+			$(document).ready( function() {
+				jQuery('#nome').keyup(function () { 
+					this.value = this.value.replace(/[^a-zA-Z ]/g,'');
+				});
+				
+				jQuery("#telefone")
+				.mask("(99) 9999-9999?9")
+				.focusout(function (event) {  
+					var target, phone, element;  
+					target = (event.currentTarget) ? event.currentTarget : event.srcElement;  
+					phone = target.value.replace(/\D/g, '');
+					element = $(target);  
+					element.unmask();  
+					if(phone.length > 10) {  
+						element.mask("(99) 99999-999?9");  
+					} else {  
+						element.mask("(99) 9999-9999?9");  
+					}  
+				});
+			});
+		</script>
+		<script>
+			function validaemail(){
+				var obj = eval("document.getElementById('email').value");
+			
+				if ((obj.length == 0) || ((obj.indexOf('@') < 1) || (obj.indexOf('.') < 1))){
+					alert('Formato de email incorreto');
+				}
+			}
+			
+			
+			function enviar(){
+				if (
+					document.getElementById("nome").value.length <= 3 || document.getElementById("nome").value == "" ||
+					(document.getElementById('email').value == 0 || document.getElementById('email').value.indexOf("@") < 1 || document.getElementById('email').value.indexOf('.') < 1) ||
+					document.getElementById("telefone").value.length <= 8 || document.getElementById("telefone").value == "" 
+				){
+					alert('Há erros no formulário por favor verifique e tente novamente!');
+				} 
+				else{
+					var dados = "";
+					dados += "<strong>"+document.getElementById("nome").value+"</strong><br>";
+					dados += document.getElementById("telefone").value+" - <a href='mailto:"+document.getElementById("email").value+"'>"+document.getElementById("email").value+"</a>";
+					
+					document.getElementById("dados").innerHTML = dados
+				}
+			}
+		</script>
+		
+	</head>
+	
+	<body>
+		<form id="form" name="form"> 
+			<span style="display:inline-table; width:70px;" onkeypress="return apenasletras(event)">Nome:</span>
+			<input type="text" id="nome" name="nome" value="" />
+			<br /><br />
+			
+			<span style="display:inline-table; width:70px;">Email:</span>
+			<input type="email" id="email" name="email" value="" onblur="validaemail()"/>
+			<br /><br />
+			
+			<span style="display:inline-table; width:70px;">Telefone:</span>
+			<input type="tel" id="telefone" name="telefone" value="" />
+			<br /><br />
+			
+			<input type="button" id="botao" value="enviar" onclick="enviar()"/>
+			<input type="reset" id="reset" value="Cancelar" />
+			
+		</form>
+		
+		<div id="dados">
+		
+		</div>
+
+	</body>
+</html>
